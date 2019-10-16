@@ -36,7 +36,17 @@
 #define		LINE3_PIN		  PIND
 #define		LINE3_PULLUP	  PORTD
 
-#define ALL_LINES	 (((LINE0_PIN&(1U<<LINE0))>>LINE0) & ((LINE1_PIN&(1U<<LINE1))>>LINE1) & ((LINE2_PIN&(1U<<LINE2))>>LINE2) & ((LINE3_PIN&(1U<<LINE3))>>LINE3))
+
+//Extra
+#define		LINE4			     0
+#define		LINE4_DDR		  DDRC
+#define		LINE4_PIN		  PINC
+#define		LINE4_PULLUP	  PORTC
+
+#define ALL_LINES	 (((LINE0_PIN&(1U<<LINE0))>>LINE0) & ((LINE1_PIN&(1U<<LINE1))>>LINE1) & ((LINE2_PIN&(1U<<LINE2))>>LINE2) & ((LINE3_PIN&(1U<<LINE3))>>LINE3)  & ((LINE4_PIN&(1U<<LINE4))>>LINE4))
+
+
+
 
 /*
  * 
@@ -46,6 +56,7 @@
  * 
  * 
  * */
+ byte keyscan(void);
 void keypad_init(void)
 {
 //set the rows direction as output
@@ -68,6 +79,13 @@ ROW0_PORT |=(1U<<ROW0);
 ROW1_PORT |=(1U<<ROW1);
 ROW2_PORT |=(1U<<ROW2);
 ROW3_PORT |=(1U<<ROW3);
+
+
+//Extra 
+LINE4_DDR &=~(1U<<LINE4);
+LINE4_PULLUP |=(1U<<LINE4);
+
+
 }
 
 
@@ -80,7 +98,7 @@ ROW3_PORT |=(1U<<ROW3);
 */
 byte keyscan(void)
 {
-uint8_t input;
+byte input;
 int row=0;
 //loop on row 
 	for(row=0;row<4;row++)
@@ -103,8 +121,9 @@ int row=0;
 				break;
 		}
 		//read the input
-		input  = ((LINE0_PIN&(1<<LINE0)) | (LINE1_PIN&(1<<LINE1)) | (LINE2_PIN&(1<<LINE2)) | (LINE3_PIN&(1<<LINE3)) );
-		
+		input  = ((LINE0_PIN&(1<<LINE0)) | (LINE1_PIN&(1<<LINE1)) | (LINE2_PIN&(1<<LINE2)) | (LINE3_PIN&(1<<LINE3)) | ((LINE4_PIN&(1<<LINE4))) );
+			
+			
 		//if it was input
 		if(ALL_LINES != 1)
 		{
@@ -129,34 +148,38 @@ int row=0;
 		case 0://switch the input
 				switch(input)
 					{
-					case 0x70: return '/';
-					case 0xB0: return '9';
-					case 0xD0: return '8';
-					case 0xF0: return '7';
+					case 0x71: return '/';
+					case 0xB1: return '9';
+					case 0xD1: return '8';
+					case 0xF1: return '7';
+					case 0xF0: return 'S';
 					}
 		case 1://switch the input
 					switch(input)
 					{
-						case 0x70: return '*';
-						case 0xB0: return '6';
-						case 0xD0: return '5';
-						case 0xE0: return '4';
+						case 0x71: return '*';
+						case 0xB1: return '6';
+						case 0xD1: return '5';
+						case 0xE1: return '4';
+						case 0xF0: return 'C';
 					}
 		case 2://switch the input
 					switch(input)
 					{
-						case 0x70: return '-';
-						case 0xB0: return '3';
-						case 0xD0: return '2';
-						case 0xE0: return '1';
+						case 0x71: return '-';
+						case 0xB1: return '3';
+						case 0xD1: return '2';
+						case 0xE1: return '1';
+						case 0xF0: return 'T';
 					}
 		case 3://switch the input
 					switch(input)
 					{
-						case 0x70: return '+';
-						case 0xB0: return '=';
-						case 0xD0: return '0';
-						case 0xE0: return '.';
+						case 0x71: return '+';
+						case 0xB1: return '=';
+						case 0xD1: return '0';
+						case 0xE1: return '.';
+						case 0xF0: return 'c';
 					}
 	}
 	return  0;
