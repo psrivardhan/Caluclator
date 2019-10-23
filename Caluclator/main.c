@@ -1,40 +1,42 @@
 #include <avr/io.h> 
 #include <util/delay.h> 
+#include <math.h>
 
 #include <funclcd.c>
 #include <keypad.c>
 #include <arthmetics.c>
 
 
-
-
 void calc_init(void);
 
-int main(void){	
-		calc_init();
-		float result;
+int main(void)
+{	
+	calc_init();
+	float result;
+	/*To do first time*/
+	
+	LCD_Clear();
+	result = getinput();
+	displayresult(result);
+					
+			
+	/*From second time*/
+	while(1)
+	{
 		byte btn;
-		
-		do{
-			result = getinput();
-			displayresult(result);
-			}
-	while(1){
 		btn=keyscan();
-		if(btn!=0){
-			if(btn=='c'){
-		LCD_Clear();
-		result = getinput();
-		displayresult(result);};
-		
-		
-		
+		if(btn!=0)
+			{
+				if(btn=='c')
+				{
+				LCD_Clear();
+				result = getinput();
+				displayresult(result);
+				}	
+			} 
 	}
 		
-		 
-		}
-		
-return 0;
+	return 0;
 
 }
 
@@ -48,7 +50,7 @@ void calc_init(void){
 	LCD_Message("P.Srivardhan");
 	
 	LCD_Cmd(0XC0);
-	LCD_Message("Calci v2");
-	animatetext(" EE11 ");
+	LCD_Message("Calci  ");
+	animatetext(" EE11");
 	LCD_Clear();
 	}

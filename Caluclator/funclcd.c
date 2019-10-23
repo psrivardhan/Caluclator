@@ -22,10 +22,10 @@ typedef uint8_t byte; // changed the name
 #define SetBit(x,y) x |= _BV(y) // equivalent to sbi(x,y)
 #define LCD_RS 0 // pin for LCD R/S (eg PB0)
 #define LCD_E 1 // pin for LCD enable
-#define DAT4 2 // pin for d4
-#define DAT5 3 // pin for d5
-#define DAT6 4 // pin for d6
-#define DAT7 5 // pin for d7
+#define DAT4 5 // pin for d4
+#define DAT5 4 // pin for d5
+#define DAT6 3 // pin for d6
+#define DAT7 2 // pin for d7
 //// The following defines are controller commands
 #define CLEARDISPLAY 0x01
 
@@ -118,13 +118,13 @@ void animatetext(const char *str){
 
 void displayresult(float result){
 	char* s;
-	s=(char *)malloc(15*sizeof(char));
+	s=(char *)malloc(20*sizeof(char));
 	int i=0,c=0;
-	dtostrf(result,1,5,s);
+	dtostrf(result,1,7,s);
 	while(s[i]!='\0'){c++;i++;}
 	for(i=1;i<=c;i++){
 		if(s[c-i]=='0'){s[c-i]='\0';}
-		else if(s[c-i]=='.'){s[c-i]='\0';}
+		else if(s[c-i]=='.'){s[c-i]='\0';i=c+1;}
 		else{i=c+1;}}
 		LCD_Cmd(0XC0);
 		LCD_Char('=');
